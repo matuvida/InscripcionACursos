@@ -8,42 +8,46 @@ namespace InscripcionACursos
 {
     class Program
     {
+         
+        
         static void Main(string[] args)
         {
+            Ejecutar();
+            Console.ReadKey();
+        }
 
-                Console.WriteLine("Ingrese la opcion deseada:\n" +
+        public static void Ejecutar()
+        {
+
+            while (true)
+            {
+                Console.WriteLine("BIENVENIDO AL SISTEMA UNIVERSITARIO\nIngrese la opcion deseada:\n" +
                        "A)Ingresar al sistema de Inscripcion de alumnos\n" +
                        "S)Salir");
-                
-            while (true)
+                var tecla = Console.ReadKey(intercept: true);
+                if (tecla.Key == ConsoleKey.A)
                 {
-                    var tecla = Console.ReadKey();
-                    if (tecla.Key == ConsoleKey.A)
-                    {
-                        Ingresar();
-                        continue;
+                    Ingresar();
+                    break;
 
-                    }
-                    else if (tecla.Key == ConsoleKey.S)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Debe ingresar un valor valido");
-                        continue;
-                    }
                 }
+                else if (tecla.Key == ConsoleKey.S)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Debe ingresar un valor valido");
+                    continue;
+                }
+            }
         }
 
         private static void Ingresar()
         {
-            var tecla = Console.ReadKey();
-
             Alumno.IniciarSesion();
-            
-            Console.WriteLine("Bienvenido al sistema integral de la facultad\n" + "Se encuentra en las ultimas 4 materias? S/N");
-            tecla = Console.ReadKey();
+            Console.WriteLine("Bienvenido al sistema de inscripcion de la facultad\n" + "Se encuentra en las ultimas 4 materias? S/N");
+            var tecla = Console.ReadKey(intercept: true);
             if (tecla.Key == ConsoleKey.S)
             {
                 Alumno.Inscribir();
@@ -51,13 +55,16 @@ namespace InscripcionACursos
             else if (tecla.Key == ConsoleKey.N)
             {
                 Alumno.Inscribir();
+                
             }
             else
             {
-
+                Console.WriteLine("Ingrese una opcion valida");
             }
             
-            MiValidador.ValidarInicioSesion();
+            //MiValidador.ValidarInicioSesion();
         }
+        
+        
     }
 }
