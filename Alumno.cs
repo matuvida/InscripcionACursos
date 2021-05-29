@@ -9,12 +9,13 @@ namespace InscripcionACursos
     
     internal class Alumno
     {
-        
-        public Alumno(int numregistro,string nombre,string carrera)
+        Dictionary<int, string> MateriasPend = new Dictionary<int, string>();
+        public Alumno(int numregistro,string nombre,string carrera )
         {
             NumRegistro = numregistro;
             Nombre = nombre;
             Carrera = carrera;
+
         }
 
         public int NumRegistro { get; }
@@ -44,7 +45,7 @@ namespace InscripcionACursos
                     if (!ingreso.ContainsKey(registroValidado))
                     {
                         Console.WriteLine("No se encontro al alumno");
-                        continue;
+                        break;
                     }
                     else
                     {
@@ -57,23 +58,75 @@ namespace InscripcionACursos
                         else
                         {
                             esCorrecto = true;
-                            Console.WriteLine("OK!!");
+                            Alumno.Inscribir(registroValidado);
                         }
                     }
+
 
                 } while (!esCorrecto);
 
                 esOK = true;
             } while (!esOK);
             //MiValidador.ValidarInicioSesion();
-
         }
 
-        internal static void Inscribir()
+        internal static void Inscribir(int Num)
         {
-            Console.WriteLine("Desarrollando metodo de inscripcion...");
+            
+            Console.WriteLine("Bienvenido al metodo de inscripcion:'\n" +
+                "Seleccione la carrera:\n" +
+                "A)Lic. en Economia\n" +
+                "B)Actuario en Administracion\n" +
+                "C)Lic. en Administracion\n" +
+                "D)Contador\n" +
+                "E)Lic. en Sistemas\n" +
+                "F)Actuario en Economia\n" +
+                "S)Salir");
+            do
+            {
+                var tecla = Console.ReadKey(intercept: true);
+                if (tecla.Key == ConsoleKey.A)
+                {
+                    Console.WriteLine("Futuro Economista");
+
+                }
+                else if (tecla.Key == ConsoleKey.B)
+                {
+                    Console.WriteLine("Futuro actuario en admin");
+
+                }
+                else if (tecla.Key == ConsoleKey.C)
+                {
+                    Console.WriteLine("Futuro lic en admin");
+
+                }
+                else if (tecla.Key == ConsoleKey.D)
+                {
+                    Console.WriteLine("Contador");
+
+                }
+                else if (tecla.Key == ConsoleKey.E)
+                {
+                    Console.WriteLine("Lic en sistemas");
+                    Alumno.VerMateriasFaltantes(Num,"E");
+                }
+                else if (tecla.Key == ConsoleKey.S)
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Ingrese una opcion valida");
+                }
+
+            } while (false);
+
         }
 
+        private static string VerMateriasFaltantes(int num, string CodCarrera)
+        {
+            return "Materias Faltantes...";
+        }
 
 
     }
