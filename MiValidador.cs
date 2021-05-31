@@ -28,6 +28,27 @@ namespace InscripcionACursos
             return numeroD;
         }
 
+        internal static bool IngresoSoN(string v)
+        {
+            Console.WriteLine(v);
+            bool esTrue = false;
+            var tecla = Console.ReadKey(intercept: true);
+            if (tecla.Key == ConsoleKey.S)
+            {
+                esTrue = true;
+
+            }
+            else if (tecla.Key == ConsoleKey.N)
+            {
+                esTrue = false;
+            }
+            else
+            {
+                Console.WriteLine("Debe ingresar S o N");
+            }
+            return esTrue;
+        }
+
         /*internal static void ValidarPass(string pass)
         {
             pass = Console.ReadLine();

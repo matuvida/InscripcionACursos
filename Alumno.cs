@@ -3,28 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace InscripcionACursos
 {
-    
+
     internal class Alumno
     {
         Dictionary<int, string> MateriasPend = new Dictionary<int, string>();
-        public Alumno(int numregistro,string nombre,string carrera )
+        public Alumno(int numregistro, string nombre, string apellido, string carrera)
         {
             NumRegistro = numregistro;
             Nombre = nombre;
+            Apellido = apellido;
             Carrera = carrera;
+
 
         }
 
         public int NumRegistro { get; }
         public string Nombre { get; }
+        public string Apellido { get; }
         public string Carrera { get; }
+
+        public List<Materia> MateriasCursadas = new List<Materia>();
+
 
         internal static void IniciarSesion()
         {
-            
+
             Dictionary<int, string> ingreso = new Dictionary<int, string>();
             ingreso.Add(884535, "MatiPass");
             ingreso.Add(881051, "LucasPass");
@@ -67,12 +74,13 @@ namespace InscripcionACursos
 
                 esOK = true;
             } while (!esOK);
-            //MiValidador.ValidarInicioSesion();
+
         }
 
         internal static void Inscribir(int Num)
         {
-            
+
+            DeclaracionJuradaUltimasMaterias();
             Console.WriteLine("Bienvenido al metodo de inscripcion:'\n" +
                 "Seleccione la carrera:\n" +
                 "A)Lic. en Economia\n" +
@@ -88,27 +96,27 @@ namespace InscripcionACursos
                 if (tecla.Key == ConsoleKey.A)
                 {
                     Console.WriteLine("Futuro Economista");
-
+                    //Alumno.VerMateriasFaltantes(Num, "A");
                 }
                 else if (tecla.Key == ConsoleKey.B)
                 {
                     Console.WriteLine("Futuro actuario en admin");
-
+                    //Alumno.VerMateriasFaltantes(Num, "B");
                 }
                 else if (tecla.Key == ConsoleKey.C)
                 {
                     Console.WriteLine("Futuro lic en admin");
-
+                    Alumno.VerMateriasFaltantes(Num, "3");
                 }
                 else if (tecla.Key == ConsoleKey.D)
                 {
                     Console.WriteLine("Contador");
-
+                    Alumno.VerMateriasFaltantes(Num, "2");
                 }
                 else if (tecla.Key == ConsoleKey.E)
                 {
                     Console.WriteLine("Lic en sistemas");
-                    Alumno.VerMateriasFaltantes(Num,"E");
+                    Alumno.VerMateriasFaltantes(Num, "1");
                 }
                 else if (tecla.Key == ConsoleKey.S)
                 {
@@ -123,22 +131,45 @@ namespace InscripcionACursos
 
         }
 
-        private static string VerMateriasFaltantes(int num, string CodCarrera)
+        public static void VerMateriasFaltantes(int numReg, string CodCarrera)
         {
-            return "Materias Faltantes...";
+            foreach (var mate in Program.matpen)
+            {
+                if (mate.Registro == numReg && mate.CodCarrera == CodCarrera && mate.StatusMateria == "Pendiente")
+                {
+                    Console.WriteLine(mate.Registro.ToString() + mate.CodCarrera + mate.CodMateria + mate.DescMateria + mate.StatusMateria);
+                }
+            }
+        }
+        private static bool DeclaracionJuradaUltimasMaterias()
+        {
+            bool cuartaMateria = MiValidador.IngresoSoN("Bienvenido!\n¿Se encuentra dentro de las ultimas 4 materias? Debe ingresar S o N");
+            return cuartaMateria;
         }
 
+        internal bool BuscarMateriasPendientes()
+        {
+            foreach (var materiasDelAlumno in MateriasCursadas)
+            {
+                if (materiasDelAlumno.Estado == "Pendiente")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        
     }
 
-    
 
 
 
 
-    
 
 
 
-    
+
+
+
 }
