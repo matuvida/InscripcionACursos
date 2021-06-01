@@ -27,9 +27,6 @@ namespace InscripcionACursos
         public string DescMateria { get; }
         public string StatusMateria { get; }
 
-        /*internal static string VerPorRegistro(int numReg , string codCarrera)
-        {
-            
-        }*/
+
     }
 }

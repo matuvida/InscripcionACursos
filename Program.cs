@@ -12,22 +12,25 @@ namespace InscripcionACursos
         static List<Materia> materias = new List<Materia>();
         static List<Alumno> alumnos = new List<Alumno>();
         public static List<MateriasPendientes> matpen = new List<MateriasPendientes>();
+        public static List<OfertaCursos> ofcursos = new List<OfertaCursos>();
+        public static List<FormularioInscripcion> cursosElegidos = new List<FormularioInscripcion>();
+
         static void Main(string[] args)
         {
-            
             cargarListaMateriasPendientes();
+            cargarListaOfertaCursos();
             Ejecutar();
             Console.ReadKey();
         }
 
         public static void Ejecutar()
         {
-            
+
             while (true)
             {
-                Console.WriteLine("BIENVENIDO AL SISTEMA UNIVERSITARIO\nIngrese la opcion deseada:\n" +
+                Console.WriteLine("BIENVENIDO AL SISTEMA UNIVERSITARIO\n\nIngrese la opcion deseada:\n" +
                        "A)Ingresar al sistema de Inscripcion de alumnos\n" +
-                       "S)Salir");
+                       "S)Salir\n");
                 var tecla = Console.ReadKey(intercept: true);
                 if (tecla.Key == ConsoleKey.A)
                 {
@@ -65,8 +68,21 @@ namespace InscripcionACursos
                 string[] col = line.Split('|');
                 matpen.Add(new MateriasPendientes(num = Convert.ToInt32(col[0]), col[1], col[2], col[3], col[4]));
             }
-            
-            
+
+        }
+
+         private static void cargarListaOfertaCursos()
+        {
+            int primerCol = 0;
+            int segundaCol = 0;
+            string filePath = "C:/Users/Win10/Desktop/OfertaCursos.txt";
+            string[] lines = File.ReadAllLines(filePath);
+            foreach (string line in lines)
+            {
+                string[] col = line.Split('|');
+                ofcursos.Add(new OfertaCursos(primerCol = Convert.ToInt32(col[0]), segundaCol = Convert.ToInt32(col[1]), col[2], col[3], col[4]));
+            }
+
         }
 
     }
