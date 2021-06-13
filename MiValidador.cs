@@ -17,10 +17,10 @@ namespace InscripcionACursos
                 {
                     Console.WriteLine("No es un número válido.");
                 }
-                else if (numeroD < 1)
+                else if (numeroD < 1 )
                 {
                         Console.WriteLine("El numero debe ser mayor a 0");
-                    }
+                 }
                 else
                 {
                     return numeroD;
@@ -49,6 +49,7 @@ namespace InscripcionACursos
             return esTrue;
         }
 
+        
         /*internal static void ValidarPass(string pass)
         {
             pass = Console.ReadLine();

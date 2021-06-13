@@ -10,6 +10,7 @@ namespace InscripcionACursos
 
     internal class Alumno
     {
+        
         Dictionary<int, string> MateriasPend = new Dictionary<int, string>();
         public Alumno(int numregistro, string nombre, string apellido, string carrera)
         {
@@ -18,6 +19,11 @@ namespace InscripcionACursos
             Apellido = apellido;
             Carrera = carrera;
 
+        }
+
+        public Alumno(int numregistro)
+        {
+            NumRegistro = numregistro;
         }
 
         public int NumRegistro { get; }
@@ -31,10 +37,6 @@ namespace InscripcionACursos
         internal static void IniciarSesion()
         {
 
-            Dictionary<int, string> ingreso = new Dictionary<int, string>();
-            ingreso.Add(884535, "MatiPass");
-            ingreso.Add(881051, "LucasPass"); //Valores por defecto que utilizamos para el inicio de Sesion
-            ingreso.Add(884410, "JorgePass");
             string registro = "";
             string pass = "";
             bool esCorrecto = true;
@@ -45,7 +47,7 @@ namespace InscripcionACursos
                 Console.WriteLine("Para ingresar, le solicitaremos los siguientes datos de acceso:\n" +
                 "Num de Registro:");
                 int registroValidado = MiValidador.ValidarNumero(registro);
-                if (!ingreso.ContainsKey(registroValidado))
+                if (!Program.registros.ContainsKey(registroValidado))
                 {
                     Console.WriteLine("No se encontro al alumno. Vuelva a ingresarlo:\n");
                     esOK = false;
@@ -59,7 +61,7 @@ namespace InscripcionACursos
                     {
                         Console.WriteLine("La contraseña:");
                         pass = Console.ReadLine();
-                        if (!ingreso.ContainsValue(pass))
+                        if (!Program.registros.ContainsValue(pass))
                         {
                             Console.WriteLine("\nLa contrasenia no es valida. Por favor vuelva a ingresarla:");
                             esCorrecto = false;
@@ -79,6 +81,7 @@ namespace InscripcionACursos
         }
         internal static void Inscribir(int Num)
         {
+            
             bool confirmacion = false;
 
             DeclaracionJuradaUltimasMaterias();
@@ -99,7 +102,7 @@ namespace InscripcionACursos
                     {
                         Console.WriteLine("\nA continuacion detallaremos las materias en las cuales te podes anotar:\n");
                         Alumno.VerMateriasFaltantes(Num, "4");
-                        Alumno.ElegirCursos();
+                        Alumno.ElegirCursos(Num);
                         Console.WriteLine("\nLos cursos elegidos son:\n");
                         Alumno.MostrarCursosElegidos();
                         confirmacion = MiValidador.IngresoSoN("Desea confirmar la inscripcion? S|N ");
@@ -121,13 +124,14 @@ namespace InscripcionACursos
                     {
                         Console.WriteLine("\nA continuacion detallaremos las materias en las cuales te puedes anotar:\n");
                         Alumno.VerMateriasFaltantes(Num, "5");
-                        Alumno.ElegirCursos();
+                        Alumno.ElegirCursos(Num);
                         Console.WriteLine("\nLos cursos elegidos son:\n");
                         Alumno.MostrarCursosElegidos();
                         confirmacion = MiValidador.IngresoSoN("Desea confirmar la inscripcion? S|N ");
                         if (confirmacion == true)
                         {
                             Console.WriteLine("\n\nGracias! Tu solicitud de inscripcion ha sido confirmada");
+                            //Program.alumnosRegistrados.Add(new Alumno(Num));
                             break;
                         }
                         else
@@ -143,7 +147,7 @@ namespace InscripcionACursos
                     {
                         Console.WriteLine("\nA continuacion detallaremos las materias en las cuales te puedes anotar:\n");
                         Alumno.VerMateriasFaltantes(Num, "3");
-                        Alumno.ElegirCursos();
+                        Alumno.ElegirCursos(Num);
                         Console.WriteLine("\nLos cursos elegidos son:\n");
                         Alumno.MostrarCursosElegidos();
                         confirmacion = MiValidador.IngresoSoN("Desea confirmar la inscripcion? S|N ");
@@ -166,7 +170,7 @@ namespace InscripcionACursos
                     {
                         Console.WriteLine("\nA continuacion detallaremos las materias en las cuales te puedes anotar:\n");
                         Alumno.VerMateriasFaltantes(Num, "2");
-                        Alumno.ElegirCursos();
+                        Alumno.ElegirCursos(Num);
                         Console.WriteLine("\nLos cursos elegidos son:\n");
                         Alumno.MostrarCursosElegidos();
                         confirmacion = MiValidador.IngresoSoN("Desea confirmar la inscripcion? S|N ");
@@ -188,7 +192,7 @@ namespace InscripcionACursos
                     {
                         Console.WriteLine("\nA continuacion detallaremos las materias en las cuales te puedes anotar:\n");
                         Alumno.VerMateriasFaltantes(Num, "1");
-                        Alumno.ElegirCursos();
+                        Alumno.ElegirCursos(Num);
                         Console.WriteLine("\nLos cursos elegidos son:\n");
                         Alumno.MostrarCursosElegidos();
                         confirmacion = MiValidador.IngresoSoN("Desea confirmar la inscripcion? S|N ");
@@ -226,39 +230,73 @@ namespace InscripcionACursos
             }
         }
 
-        private static void ElegirCursos()
+        private static void ElegirCursos(int NumRegistro)
         {
             int codMateriaElegida = 0;
             string MateriaElegida = "";
             string CursoElegido = "";
             int codCursoElegido = 0;
             bool respuesta = false;
+            bool MateriaInscripta = false;
             for (int i = 0; i < MaximoMaterias; i++)
             {
-
+                
                     Console.WriteLine("\n\nEscriba el numero de materia a la cual se quiera anotar:\n");
                     codMateriaElegida = MiValidador.ValidarNumero(MateriaElegida);
+                    MateriaInscripta = Alumno.ValidarInscripcion(NumRegistro, codMateriaElegida);
+                if (MateriaInscripta == true)
+                {
+                    Console.WriteLine("Usted ya esta inscripto en esta materia");
+                }
+                else
+                {
                     BuscarOfertaCurso(codMateriaElegida);
                     Console.WriteLine("Elija el codigo del curso:\n");
                     codCursoElegido = MiValidador.ValidarNumero(CursoElegido);
-                    RegistrarCurso(codCursoElegido);
+                    RegistrarCurso(NumRegistro,codMateriaElegida, codCursoElegido);
                     respuesta = MiValidador.IngresoSoN("Desea elegir otro curso? S|N ");
-                if (respuesta == false)
-                {
-                    break;
+                    if (respuesta == false)
+                    {
+                        break;
+                    }
                 }
                     
             }            
 
         }
 
-        private static void RegistrarCurso(int codCurso)
+        private static bool ValidarInscripcion(int numRegistro, int codMateriaElegida)
+        {
+            bool EstaInscripto = false;
+            foreach (var mate in Program.matpen)
+            {
+                if (mate.Registro == numRegistro && mate.CodMateria == codMateriaElegida && mate.StatusMateria == "Pendiente")
+                {
+                    EstaInscripto = true;
+                }
+                else
+                {
+                    EstaInscripto = false;
+                }
+            }
+            return EstaInscripto;
+        }
+
+
+        private static void RegistrarCurso(int NumReg,  int codMateria, int codCurso)
         {
             foreach (var opciones in Program.ofcursos)
             {
                 if (opciones.CodCurso == codCurso)
                 {
                     Program.cursosElegidos.Add(new FormularioInscripcion(opciones.CodCurso, opciones.CodMateria, opciones.NombreMateria, opciones.Catedra, opciones.Horario));
+                    foreach (var mate in Program.matpen)
+                    {
+                        if (mate.Registro == NumReg && mate.CodMateria == codMateria)
+                        {
+                            mate.StatusMateria = "Inscripto";
+                        }
+                    }
                 }
             }
         }

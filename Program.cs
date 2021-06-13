@@ -11,12 +11,15 @@ namespace InscripcionACursos
     {
         static List<Materia> materias = new List<Materia>();
         static List<Alumno> alumnos = new List<Alumno>();
-        public static List<MateriasPendientes> matpen = new List<MateriasPendientes>();
+        public static List<MateriasPorAlumno> matAlum = new List<MateriasPorAlumno>();
+        //public static List<Alumno> alumnosRegistrados = new List<Alumno>();
         public static List<OfertaCursos> ofcursos = new List<OfertaCursos>();
+        public static Dictionary<int,string> registros = new Dictionary<int, string>();
         public static List<FormularioInscripcion> cursosElegidos = new List<FormularioInscripcion>();
 
         static void Main(string[] args)
         {
+            cargarMaestroAlumnos();
             cargarListaMateriasPendientes();
             cargarListaOfertaCursos();
             Ejecutar();
@@ -53,21 +56,21 @@ namespace InscripcionACursos
         private static void Ingresar()
         {
             Alumno.IniciarSesion();
-
         }
 
 
         private static void cargarListaMateriasPendientes()
         {
             int num = 0;
-            string filePath = "C:/Users/Win10/Desktop/AlumnosMaterias.txt";
-            //Documentos.LeerHistorialMaterias(filePath);
+            int tercerNum = 0;
+            string filePath = "AlumnosMaterias.txt";
             string[] lines = File.ReadAllLines(filePath);
             foreach (string line in lines)
             {
                 string[] col = line.Split('|');
-                matpen.Add(new MateriasPendientes(num = Convert.ToInt32(col[0]), col[1], col[2], col[3], col[4]));
+                matAlum.Add(new MateriasPorAlumno(num = Convert.ToInt32(col[0]), col[1], tercerNum = Convert.ToInt32(col[2]), col[3], col[4]));
             }
+
 
         }
 
@@ -75,7 +78,7 @@ namespace InscripcionACursos
         {
             int primerCol = 0;
             int segundaCol = 0;
-            string filePath = "C:/Users/Win10/Desktop/OfertaCursos.txt";
+            string filePath = "OfertaCursos.txt";
             string[] lines = File.ReadAllLines(filePath);
             foreach (string line in lines)
             {
@@ -85,5 +88,17 @@ namespace InscripcionACursos
 
         }
 
+        private static void cargarMaestroAlumnos()
+        {
+            int primerCol = 0;
+            string filePath = "MaestroAlumnos.txt";
+            string[] lines = File.ReadAllLines(filePath);
+            foreach (string line in lines)
+            {
+                string[] col = line.Split('|');
+                registros.Add(primerCol = Convert.ToInt32(col[0]), col[1]);
+            }
+
+        }
     }
 }
