@@ -9,10 +9,9 @@ namespace InscripcionACursos
 {
     public class Program
     {
-        static List<Materia> materias = new List<Materia>();
-        static List<Alumno> alumnos = new List<Alumno>();
+
         public static List<MateriasPorAlumno> matAlum = new List<MateriasPorAlumno>();
-        //public static List<Alumno> alumnosRegistrados = new List<Alumno>();
+        public static List<AlumnoRegistrado> alumnosRegistrados = new List<AlumnoRegistrado>();
         public static List<OfertaCursos> ofcursos = new List<OfertaCursos>();
         public static Dictionary<int,string> registros = new Dictionary<int, string>();
         public static List<FormularioInscripcion> cursosElegidos = new List<FormularioInscripcion>();

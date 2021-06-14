@@ -44,10 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alumno.cs" />
+    <Compile Include="AlumnoRegistrado.cs" />
     <Compile Include="Documentos.cs" />
     <Compile Include="FormularioInscripcion.cs" />
     <Compile Include="Materia.cs" />
-    <Compile Include="MateriasPendientes.cs" />
+    <Compile Include="MateriasPorAlumno.cs" />
     <Compile Include="MiValidador.cs" />
     <Compile Include="OfertaCursos.cs" />
     <Compile Include="Program.cs" />
