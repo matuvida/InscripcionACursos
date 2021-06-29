@@ -10,17 +10,19 @@ namespace InscripcionACursos
     public class Program
     {
 
-        public static List<MateriasPorAlumno> matAlum = new List<MateriasPorAlumno>();
+        public static List<Materias> matAlum = new List<Materias>();
         public static List<AlumnoRegistrado> alumnosRegistrados = new List<AlumnoRegistrado>();
-        public static List<OfertaCursos> ofcursos = new List<OfertaCursos>();
+        public static List<Cursos> ofcursos = new List<Cursos>();
         public static Dictionary<int,string> registros = new Dictionary<int, string>();
+        public static List<Correlativas> correlativas = new List<Correlativas>();
         public static List<FormularioInscripcion> cursosElegidos = new List<FormularioInscripcion>();
 
         static void Main(string[] args)
         {
             cargarMaestroAlumnos();
-            cargarListaMateriasPendientes();
+            cargarListaMaterias();
             cargarListaOfertaCursos();
+            cargarCorrelativas();
             Ejecutar();
             Console.ReadKey();
         }
@@ -58,7 +60,7 @@ namespace InscripcionACursos
         }
 
 
-        private static void cargarListaMateriasPendientes()
+        private static void cargarListaMaterias()
         {
             int num = 0;
             int tercerNum = 0;
@@ -67,9 +69,11 @@ namespace InscripcionACursos
             foreach (string line in lines)
             {
                 string[] col = line.Split('|');
-                matAlum.Add(new MateriasPorAlumno(num = Convert.ToInt32(col[0]), col[1], tercerNum = Convert.ToInt32(col[2]), col[3], col[4]));
-            }
+                string [] Correlativas = col[5].Split('-');
+                matAlum.Add(new Materias(num = Convert.ToInt32(col[0]), col[1], tercerNum = Convert.ToInt32(col[2]), col[3], col[4],Correlativas));
 
+            }
+            
 
         }
 
@@ -82,7 +86,7 @@ namespace InscripcionACursos
             foreach (string line in lines)
             {
                 string[] col = line.Split('|');
-                ofcursos.Add(new OfertaCursos(primerCol = Convert.ToInt32(col[0]), segundaCol = Convert.ToInt32(col[1]), col[2], col[3], col[4]));
+                ofcursos.Add(new Cursos(primerCol = Convert.ToInt32(col[0]), segundaCol = Convert.ToInt32(col[1]), col[2], col[3], col[4]));
             }
 
         }
@@ -96,6 +100,20 @@ namespace InscripcionACursos
             {
                 string[] col = line.Split('|');
                 registros.Add(primerCol = Convert.ToInt32(col[0]), col[1]);
+            }
+
+        }
+
+        private static void cargarCorrelativas()
+        {
+            int primerCol = 0;
+            int segundaCol = 0;
+            string filePath = "Correlativas.txt";
+            string[] lines = File.ReadAllLines(filePath);
+            foreach (string line in lines)
+            {
+                string[] col = line.Split('|');
+                correlativas.Add(new Correlativas(primerCol = Convert.ToInt32(col[0]), segundaCol = Convert.ToInt32(col[1])));
             }
 
         }

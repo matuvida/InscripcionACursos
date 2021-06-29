@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace InscripcionACursos
 {
-    public class OfertaCursos
+    public class Cursos
     {
-        public OfertaCursos(int codCurso, int codMateria, string nombreMateria, string Catedra, string horario)
+        public Cursos(int codCurso, int codMateria, string nombreMateria, string Catedra, string horario)
         {
             CodCurso = codCurso;
             CodMateria = codMateria;

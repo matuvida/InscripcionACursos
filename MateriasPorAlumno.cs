@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace InscripcionACursos
 {
-    public class MateriasPorAlumno
+    public class Materias
     {
-        
-        public MateriasPorAlumno(int registro, string codCarrera, int codMateria, string descMateria, string statusMateria)
-        {
 
-            Registro = registro;
-            CodCarrera = codCarrera;
+        public Materias(int registro, string codCarrera, int codMateria, string descMateria, string statusMateria, string []Correlativas)
+        {
             CodMateria = codMateria;
             DescMateria = descMateria;
             StatusMateria = statusMateria;
+            this.Correlativas = Correlativas;
+            Registro = registro;
+            CodCarrera = codCarrera;
+
         }
         
         
@@ -22,7 +24,6 @@ namespace InscripcionACursos
         public int CodMateria { get; }
         public string DescMateria { get; }
         public string StatusMateria { get; set; }
-
-
+        public string [] Correlativas { get; }
     }
 }

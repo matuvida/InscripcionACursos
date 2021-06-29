@@ -45,12 +45,12 @@
   <ItemGroup>
     <Compile Include="Alumno.cs" />
     <Compile Include="AlumnoRegistrado.cs" />
+    <Compile Include="Correlativas.cs" />
     <Compile Include="Documentos.cs" />
     <Compile Include="FormularioInscripcion.cs" />
-    <Compile Include="Materia.cs" />
     <Compile Include="MateriasPorAlumno.cs" />
     <Compile Include="MiValidador.cs" />
-    <Compile Include="OfertaCursos.cs" />
+    <Compile Include="Cursos.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registro.cs" />

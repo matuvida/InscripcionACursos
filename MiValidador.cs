@@ -49,7 +49,41 @@ namespace InscripcionACursos
             return esTrue;
         }
 
-        
+        internal static bool ValidarInscripcionCurso(int numeroReg, int codCursoElegido)
+        {
+            bool valor = false;
+            foreach (var cursosInscriptos in Program.cursosElegidos)
+            {
+                if (cursosInscriptos.CodCurso == codCursoElegido && cursosInscriptos.NumRegistro == numeroReg)
+                {
+                    return valor = true;
+                }
+                else
+                {
+                    return valor = false;
+                }
+            }
+            return valor;
+        }
+
+        internal static bool ValidarInscripcionMateria(int numReg, int codMateriaElegida)
+        {
+            bool valor = false;
+            foreach (var materiasInscriptas in Program.cursosElegidos)
+            {
+                if (materiasInscriptas.CodMateria == codMateriaElegida && materiasInscriptas.NumRegistro == numReg)
+                {
+                    return valor = true;
+                }
+                else
+                {
+                    return valor = false;
+                }
+            }
+            return valor;
+        }
+
+
         /*internal static void ValidarPass(string pass)
         {
             pass = Console.ReadLine();
