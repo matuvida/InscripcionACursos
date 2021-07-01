@@ -37,7 +37,7 @@ namespace InscripcionACursos
         //public List<MateriasPorAlumno> MateriasCursadas = new List<MateriasPorAlumno>();
         public const int MaximoMaterias = 4;
         private static bool Habilitado;
-
+        
         internal static void IniciarSesion()
         {
 
@@ -467,6 +467,7 @@ namespace InscripcionACursos
             int codCursoElegido = 0;
             bool CursoInscripto = false;
             bool MateriaInscripta = false;
+            bool MateriaDispo = false;
             bool respuesta = false;
             bool flag = false;
             for (int i = 0; i < MaximoMaterias; i++)
@@ -479,7 +480,8 @@ namespace InscripcionACursos
                     Console.WriteLine("\n\nEscriba el numero de materia a la cual se quiera anotar:\n");
                     codMateriaElegida = MiValidador.ValidarNumero(MateriaElegida);
                     MateriaInscripta = MiValidador.ValidarInscripcionMateria(NumRegistro, codMateriaElegida);
-                    if (!MateriaInscripta)
+                    MateriaDispo = MiValidador.ValidarCorrelativas(codMateriaElegida, ultimasCuatro);
+                    if (!MateriaInscripta && MateriaDispo)
                     {
                         BuscarOfertaCurso(codMateriaElegida);
                         do
@@ -503,8 +505,9 @@ namespace InscripcionACursos
                     }
                     else
                     {
-                        Console.WriteLine("\nUsted ya se encuentra inscripto en esta materia, por favor vuelva a seleccionar otra materia:\n\n");
+                        Console.WriteLine("\nUsted no puede anotarse en esta materia, por favor vuelva a seleccionar otra materia:\n\n");
                         MateriaInscripta = true;
+                        
                     }
                     respuesta = MiValidador.IngresoSoN("\nDesea elegir otra materia? S|N \n");
                     if (respuesta == false)
@@ -556,8 +559,11 @@ namespace InscripcionACursos
         public static void VerMateriasFaltantes(int numReg, string CodCarrera, bool ultimasCuatro)
         {
             List<int> CorrelativasPorMateria = new List<int>();
-            bool aprobada = true;
-            
+            List<int> MateriasPendientesPorAlumno = new List<int>();
+            List<int> MateriasAprobadasPorAlumno = new List<int>();
+            //List<int> MateriasDisponiblesPorAlumno = new List<int>();
+
+
             Console.WriteLine("Cod. Materia | Desc. Materia");
             if (ultimasCuatro)
             {
@@ -571,55 +577,80 @@ namespace InscripcionACursos
             }
             else
             {
+                
                 int contador = 0;
-                foreach (var matePen in Program.matAlum)
+                MateriasPendientesPorAlumno = TraerMatPenPorAlumno(numReg, CodCarrera);
+                foreach (var matPenPorAlum in MateriasPendientesPorAlumno)
                 {
-                    if (matePen.Registro == numReg && matePen.CodCarrera == CodCarrera && matePen.StatusMateria == "Pendiente")
+                    CorrelativasPorMateria = TraerCorrelativas(matPenPorAlum);
+                    bool puedoAnotarmeEnPendiente = false;
+                    foreach (var corrPorMat in CorrelativasPorMateria)
                     {
-                         CorrelativasPorMateria = TraerCorrelativas(matePen.CodMateria);
-                        foreach (var correlativa in CorrelativasPorMateria)
+                        MateriasAprobadasPorAlumno = TraerMateriasAprobadas(numReg, CodCarrera);
+                        puedoAnotarmeEnPendiente = MateriasAprobadasPorAlumno.Contains(corrPorMat);
+                        if (puedoAnotarmeEnPendiente)
                         {
-                            aprobada = VerificarMateriaAprobada(numReg, correlativa);
-                            if (aprobada)
-                            {
-                                contador++;
-                            }
-                           
+                            contador++;
                         }
-                        if (contador == CorrelativasPorMateria.Count)
-                        {
-                           
-                        }
-
+                        
+                    }
+                    string nombreMat = traerDescripcionMateria(matPenPorAlum);
+                    if (contador == CorrelativasPorMateria.Count())
+                    {
+                        Console.WriteLine(matPenPorAlum + "|" + nombreMat);
+                        Program.MateriasDisponiblesPorAlumno.Add(matPenPorAlum);
                     }
                     
+                    contador =0; 
                 }
-
-            }
-
+            } 
+            
         }
 
+        private static string traerDescripcionMateria(int mate)
+        {
+            string valor = "";
+            foreach (var item in Program.matAlum)
+            {
+                if (item.CodMateria == mate) 
+                {
+                    valor = item.DescMateria;
+                }
+            } 
+            return valor;
+        }
+
+        private static List<int> TraerMatPenPorAlumno(int numReg, string codCarrera)
+        {
+            List<int> MateriasPen = new List<int>();
+            foreach (var matePen in Program.matAlum)
+            {
+                if (matePen.Registro == numReg && matePen.CodCarrera == codCarrera && matePen.StatusMateria == "Pendiente")
+                {
+                    MateriasPen.Add(matePen.CodMateria);
+                }
+            }
+            return MateriasPen;
+        }
         private static bool DeclaracionJuradaUltimasMaterias()
         {
             bool cuartaMateria = MiValidador.IngresoSoN("\nBIENVENIDO!\n¿Se encuentra dentro de las ultimas 4 materias? Debe ingresar S o N");
             return cuartaMateria;
         }
 
-        private static bool VerificarMateriaAprobada(int numReg, int codMate)
+
+        private static List<int> TraerMateriasAprobadas(int numReg, string codCarre)
         {
-            bool valor = false;
-            foreach (var matPen in Program.matAlum)
+
+            List<int> matApro = new List<int>();
+            foreach (var aprobadas in Program.matAlum)
             {
-                if (matPen.Registro == numReg && matPen.CodMateria == codMate && matPen.StatusMateria == "Aprobada")
+                if (aprobadas.Registro == numReg && aprobadas.CodCarrera == codCarre && aprobadas.StatusMateria == "Aprobado")
                 {
-                    valor = true;
-                }
-                else
-                {
-                    valor = false;
+                    matApro.Add(aprobadas.CodMateria);
                 }
             }
-            return valor;
+            return matApro;
         }
 
         private static List<int> TraerCorrelativas(int codMate)
@@ -636,6 +667,7 @@ namespace InscripcionACursos
             return corPorMat;
         }
         
+
     }
 
 

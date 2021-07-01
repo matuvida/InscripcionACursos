@@ -6,12 +6,11 @@ namespace InscripcionACursos
     public class Materias
     {
 
-        public Materias(int registro, string codCarrera, int codMateria, string descMateria, string statusMateria, string []Correlativas)
+        public Materias(int registro, string codCarrera, int codMateria, string descMateria, string statusMateria)
         {
             CodMateria = codMateria;
             DescMateria = descMateria;
             StatusMateria = statusMateria;
-            this.Correlativas = Correlativas;
             Registro = registro;
             CodCarrera = codCarrera;
 
@@ -24,6 +23,6 @@ namespace InscripcionACursos
         public int CodMateria { get; }
         public string DescMateria { get; }
         public string StatusMateria { get; set; }
-        public string [] Correlativas { get; }
+
     }
 }

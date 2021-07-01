@@ -16,6 +16,7 @@ namespace InscripcionACursos
         public static Dictionary<int,string> registros = new Dictionary<int, string>();
         public static List<Correlativas> correlativas = new List<Correlativas>();
         public static List<FormularioInscripcion> cursosElegidos = new List<FormularioInscripcion>();
+        public static List<int> MateriasDisponiblesPorAlumno = new List<int>();
 
         static void Main(string[] args)
         {
@@ -69,8 +70,8 @@ namespace InscripcionACursos
             foreach (string line in lines)
             {
                 string[] col = line.Split('|');
-                string [] Correlativas = col[5].Split('-');
-                matAlum.Add(new Materias(num = Convert.ToInt32(col[0]), col[1], tercerNum = Convert.ToInt32(col[2]), col[3], col[4],Correlativas));
+               
+                matAlum.Add(new Materias(num = Convert.ToInt32(col[0]), col[1], tercerNum = Convert.ToInt32(col[2]), col[3], col[4]));
 
             }
             
@@ -117,5 +118,7 @@ namespace InscripcionACursos
             }
 
         }
+
+        
     }
 }

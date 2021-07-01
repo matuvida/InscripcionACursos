@@ -83,26 +83,25 @@ namespace InscripcionACursos
             return valor;
         }
 
-
-        /*internal static void ValidarPass(string pass)
+        public static bool ValidarCorrelativas(int codMate, bool ultimasCuatro)
         {
-            pass = Console.ReadLine();
-            int numeroD;
-            do
+            bool valor = false;
+            if (!ultimasCuatro)
             {
-
-                if (!int.TryParse(pass, out numeroD))
-                {
-                    Console.WriteLine("No es un número válido.");
+               if (Program.MateriasDisponiblesPorAlumno.Contains(codMate))
+               {
+                    valor = true;
                 }
                 else
                 {
-                    if (numeroD < 10000000 || numeroD > 99999999)
-                    {
-                        Console.WriteLine("Debe tener 8 cifras.");
-                    }
-                }
-            } while (true);
-        }*/
+                    valor = false;
+                }   
+            }
+            else
+            {
+                valor = true;
+            }
+            return valor;
+        }
     }
 }
